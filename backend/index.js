@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const token = '6955135086:AAEzhuTj1-YG--nAQAwB26GexwGb3ys6Y8E';
-const webAppUrl = 'https://1068-45-15-114-104.ngrok-free.app';
+const webAppUrl = 'https://cdaf-45-15-114-104.ngrok-free.app';
 
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
@@ -17,11 +17,47 @@ bot.on('message', async (msg) => {
     if(text === '/start') {
         await bot.sendMessage(chatId, 'Сделай мем по кнопке ниже', {
             reply_markup: {
-                inline_keyboard: [
+                keyboard: [
                     [{text: 'Создать мем', web_app: {url: webAppUrl}}]
                 ]
             }
         })
+    }
+
+    if(msg?.web_app_data?.data) {
+        try {
+            const data = JSON.parse(msg?.web_app_data?.data)
+            console.log(data)
+
+            const { createCanvas, loadImage } = require('canvas')
+
+            const canvas = createCanvas(200, 200)
+            const ctx = canvas.getContext('2d')
+            const fontSize = 50
+
+            const image = await loadImage('http://localhost:5173' + data.image)
+            canvas.width = image.width
+            canvas.height = image.height
+
+            ctx.drawImage(image, 0, 0)
+            ctx.font = `${fontSize}px Arial`
+            ctx.textAlign = 'center'
+            ctx.textWrap = 'wrap'
+            ctx.fillText(
+                data.textUp,
+                canvas.width / 2,
+                fontSize
+            )
+            ctx.fillText(
+                data.textDown,
+                canvas.width / 2,
+                canvas.height - 15
+            )
+
+            await bot.sendPhoto(chatId, canvas.toBuffer('image/png'));
+        } catch (e) {
+            console.log(e);
+        }
     }
 });
 

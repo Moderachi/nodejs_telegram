@@ -1,12 +1,23 @@
 import {defineStore} from "pinia";
 
-export const useTgStore = defineStore('tg', {
-    state: () => ({
-        tg: window.Telegram.WebApp
-    }),
-    actions: {
+const tg = window.Telegram.WebApp
+export const useTgStore = defineStore('telegram', () => {
+    return {
+        tg,
+        ready() {
+            tg.ready()
+            tg.MainButton.setParams({
+                text: 'Создать мем'
+            })
+        },
         closeWebApp() {
-            this.tg.close
-        }
+            tg.close()
+        },
+        showMainButton() {
+            tg.MainButton.show()
+        },
+        hideMainButton() {
+            tg.MainButton.hide()
+        },
     }
 })
