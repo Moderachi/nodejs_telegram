@@ -15,7 +15,6 @@ const items = [
 const selectedTemplate = ref(1)
 const textUp = ref('1')
 const textDown = ref('-')
-const cxt = ref(null)
 const newMemes = ref(null)
 
 const isValidForm = computed(() => {
@@ -41,7 +40,6 @@ onMounted(() => {
 watch(isValidForm, () => {
   if (isValidForm.value) {
     tgStore.showMainButton()
-    createMem()
   } else {
     tgStore.hideMainButton()
   }
@@ -50,17 +48,7 @@ watch(isValidForm, () => {
 </script>
 
 <template>
-  <div style="max-width: 600px">
-    <canvas ref="cxt" style="display: none"/>
-    <v-card>
-      <v-img
-          :src="newMemes"
-          cover
-          width="400"
-          class="text-right pa-2"
-      />
-    </v-card>
-    <br>
+  <div style="max-width: 300px">
     <v-card
         height="350"
         max-width="400"

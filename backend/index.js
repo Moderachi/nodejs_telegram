@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const token = '6955135086:AAEzhuTj1-YG--nAQAwB26GexwGb3ys6Y8E';
-const webAppUrl = 'https://cdaf-45-15-114-104.ngrok-free.app';
+const webAppUrl = 'https://308c-94-73-230-225.ngrok-free.app';
 
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
@@ -54,7 +54,7 @@ bot.on('message', async (msg) => {
                 canvas.height - 15
             )
 
-            await bot.sendPhoto(chatId, canvas.toBuffer('image/png'));
+            await bot.sendPhoto(chatId, canvas.toBuffer());
         } catch (e) {
             console.log(e);
         }
